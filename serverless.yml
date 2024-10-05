@@ -1,0 +1,87 @@
+service: connection
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  lambdaHashingVersion: 20201221
+  vpc:
+    securityGroupIds:
+      - sg-03eb8b8e58552b4e1
+
+    subnetIds:
+      - subnet-03f617abc3fcaba62
+      - subnet-0713a97d0ece7a12e
+      - subnet-0d04e6537eeef446b
+      - subnet-017ef236f1ce34fec
+      - subnet-01c2cab067b95d58f
+      - subnet-0c1b4ce75021c810d
+
+functions:
+  # Hacemos test de conexión para listar los datos que tenemos en la tabla
+  Testconnection:
+    handler: handlers/handlerTestconnection.Testconnection
+    events:
+      - httpApi:
+          path: /connection/Testconnection
+          method: get
+
+  # Realizamos una creación de datos a nuestra tabla planetas
+  Testcreate:
+    handler: handlers/handlerTestcreate.Testcreate
+    events:
+      - httpApi:
+          path: /connection/Testcreate
+          method: post
+  #{
+  #  "clima": "Tropical1",
+  #  "diametro": "1001",
+  #  "gravedad": "2estandar",
+  #  "nombre": "tierra1",
+  #  "periodo_orbital": "304",
+  #  "poblacion": 10001,
+  #  "periodo_rotacion": "23",
+  #  "superficie_agua": "1151",
+  #  "terreno": "rocoso1",
+  #  "url": "url_link1"
+  #}
+
+  # Realizamos una actualización de datos a una fila creada en nuestra tabla
+  Testupdate:
+    handler: handlers/handlerTestupdate.Testupdate
+    events:
+      - httpApi:
+          path: /connection/Testupdate/{id}
+          method: put
+  #https://1ngvw9od1k.execute-api.us-east-1.amazonaws.com/connection/Testupdate/6
+  #{
+  #  "clima": "Tropical1",
+  #  "diametro": "1001",
+  #  "gravedad": "2estandar",
+  #  "nombre": "tierra1",
+  #  "periodo_orbital": "304",
+  #  "poblacion": 10001,
+  #  "periodo_rotacion": "23",
+  #  "superficie_agua": "1151",
+  #  "terreno": "rocoso1",
+  #  "url": "url_link1"
+  #}
+
+  # Realizamos una eliminación a un registro en específico de nuestra tabla
+  Testdelete:
+    handler: handlers/handlerTestdelete.Testdelete
+    events:
+      - httpApi:
+          path: /connection/Testdelete/{id}
+          method: delete
+  #https://1ngvw9od1k.execute-api.us-east-1.amazonaws.com/connection/Testdelete/6
+
+  # Realizamos un select a un registro en específico de nuestra tabla
+  Testselect:
+    handler: handlers/handlerTestselect.Testselect
+    events:
+      - httpApi:
+          path: /connection/Testselect/{id}
+          method: get
+  #https://1ngvw9od1k.execute-api.us-east-1.amazonaws.com/connection/Testselect/4
